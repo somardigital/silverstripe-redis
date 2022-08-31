@@ -15,9 +15,11 @@ class CacheFactory implements SilverstripeCacheFactory
 
     public function __construct()
     {
-        if (!Environment::getEnv('SS_REDIS_SCHEME') ||
+        if (
+            !Environment::getEnv('SS_REDIS_SCHEME') ||
             !Environment::getEnv('SS_REDIS_HOST') ||
-            !Environment::getEnv('SS_REDIS_PORT')) {
+            !Environment::getEnv('SS_REDIS_PORT')
+        ) {
             throw new RuntimeException(
                 'These environment variables are required: SS_REDIS_SCHEME, SS_REDIS_HOST, SS_REDIS_PORT'
             );
