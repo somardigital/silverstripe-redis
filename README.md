@@ -7,3 +7,7 @@ This module enabled Silverstripe to use redis for caching and session handling. 
 ```
 composer require "somardesignstudios/silverstripe-redis"
 ```
+
+## Usage
+
+@TODO document...
