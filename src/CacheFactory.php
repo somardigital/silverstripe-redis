@@ -7,7 +7,8 @@ use RuntimeException;
 use SilverStripe\Core\Cache\CacheFactory as SilverstripeCacheFactory;
 use SilverStripe\Core\Environment;
 use SilverStripe\Core\Injector\Injector;
-use Symfony\Component\Cache\Simple\RedisCache;
+use Symfony\Component\Cache\Adapter\RedisAdapter;
+use Symfony\Component\Cache\Psr16Cache;
 
 class CacheFactory implements SilverstripeCacheFactory
 {
@@ -42,10 +43,12 @@ class CacheFactory implements SilverstripeCacheFactory
 
         $defaultLifetime = $params['defaultLifetime'] ?? 0;
 
-        return Injector::inst()->createWithArgs(RedisCache::class, [
-            $this->client,
-            $namespace,
-            $defaultLifetime,
+        return Injector::inst()->createWithArgs(Psr16Cache::class, [
+            Injector::inst()->createWithArgs(RedisAdapter::class, [
+                $this->client,
+                $namespace,
+                $defaultLifetime,
+            ]),
         ]);
     }
 }
