@@ -25,6 +25,7 @@ class SessionHandler extends PredisHandler
             'scheme' => Environment::getEnv('SS_REDIS_SCHEME'),
             'host'   => Environment::getEnv('SS_REDIS_HOST'),
             'port'   => Environment::getEnv('SS_REDIS_PORT'),
+        ], [
             'prefix' => Environment::getEnv('SS_REDIS_PREFIX'),
         ]);
 

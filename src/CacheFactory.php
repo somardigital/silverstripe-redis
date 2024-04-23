@@ -30,10 +30,10 @@ class CacheFactory implements SilverstripeCacheFactory
             'scheme' => Environment::getEnv('SS_REDIS_SCHEME'),
             'host'   => Environment::getEnv('SS_REDIS_HOST'),
             'port'   => Environment::getEnv('SS_REDIS_PORT'),
+        ], [
             'prefix' => Environment::getEnv('SS_REDIS_PREFIX'),
         ]);
     }
-
 
     public function create($service, array $params = [])
     {
@@ -43,12 +43,12 @@ class CacheFactory implements SilverstripeCacheFactory
 
         $defaultLifetime = $params['defaultLifetime'] ?? 0;
 
-        return Injector::inst()->createWithArgs(Psr16Cache::class, [
-            Injector::inst()->createWithArgs(RedisAdapter::class, [
-                $this->client,
-                $namespace,
-                $defaultLifetime,
-            ]),
+        $psr6Cache = Injector::inst()->createWithArgs(RedisAdapter::class, [
+            $this->client,
+            $namespace,
+            $defaultLifetime,
         ]);
+
+        return Injector::inst()->createWithArgs(Psr16Cache::class, [$psr6Cache]);
     }
 }
