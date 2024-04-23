@@ -27,9 +27,10 @@ class CacheFactory implements SilverstripeCacheFactory
         }
 
         $this->client = new Client([
-            'scheme' => Environment::getEnv('SS_REDIS_SCHEME'),
-            'host'   => Environment::getEnv('SS_REDIS_HOST'),
-            'port'   => Environment::getEnv('SS_REDIS_PORT'),
+            'scheme'   => Environment::getEnv('SS_REDIS_SCHEME'),
+            'host'     => Environment::getEnv('SS_REDIS_HOST'),
+            'port'     => Environment::getEnv('SS_REDIS_PORT'),
+            'database' => Environment::getEnv('SS_REDIS_DATABASE'),
         ], [
             'prefix' => Environment::getEnv('SS_REDIS_PREFIX'),
         ]);
