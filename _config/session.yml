@@ -1,0 +1,5 @@
+---
+Name: redis-session
+---
+Somar\Redis\SessionHandler:
+  timeout: 7200
