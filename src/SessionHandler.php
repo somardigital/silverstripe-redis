@@ -6,10 +6,14 @@ use Predis\Client;
 use Predis\Session\Handler as PredisHandler;
 use RuntimeException;
 use SilverStripe\Core\Environment;
+use SilverStripe\Core\Config\Configurable;
 
 class SessionHandler extends PredisHandler
 {
-    private $prefix = 'PHPSESSION:';
+    use Configurable;
+
+    private static $timeout;
+    private static $prefix = 'PHPSESSION:';
 
     public function __construct()
     {
@@ -30,8 +34,11 @@ class SessionHandler extends PredisHandler
             'prefix' => Environment::getEnv('SS_REDIS_PREFIX'),
         ]);
 
+        $timeout = static::$timeout ?: 7200;
+        $envTimeout = Environment::getEnv('SS_SESSION_TIMEOUT');
+
         parent::__construct($client, [
-            'gc_maxlifetime' => 7200,
+            'gc_maxlifetime' => $envTimeout ?: $timeout,
         ]);
 
         $this->register();
@@ -62,6 +69,6 @@ class SessionHandler extends PredisHandler
 
     private function getRedisKey($session_id)
     {
-        return $this->prefix . $session_id;
+        return static::$prefix . $session_id;
     }
 }
