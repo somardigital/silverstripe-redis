@@ -3,6 +3,7 @@
 namespace Somar\Redis;
 
 use Predis\Client;
+use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
 use SilverStripe\Core\Cache\CacheFactory as SilverstripeCacheFactory;
 use SilverStripe\Core\Environment;
@@ -36,7 +37,7 @@ class CacheFactory implements SilverstripeCacheFactory
         ]);
     }
 
-    public function create($service, array $params = [])
+    public function create(string $service, array $params = []): CacheInterface
     {
         $namespace = isset($params['namespace'])
             ? $params['namespace'] . '_' . md5(BASE_PATH)
