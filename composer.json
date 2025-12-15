@@ -1,6 +1,6 @@
 {
-    "name": "somardesignstudios/silverstripe-redis",
-	"description": "A silverstripe module providing redis caching and session handling",
+    "name": "somardigital/silverstripe-redis",
+	"description": "A silverstripe module providing Redis caching and session handling",
 	"type": "silverstripe-vendormodule",
     "keywords": [
         "silverstripe",
@@ -17,5 +17,8 @@
         }
     },
     "minimum-stability": "dev",
-    "prefer-stable": true
+    "prefer-stable": true,
+    "replace": {
+        "somardesignstudios/silverstripe-redis": "*"
+    }
   }
