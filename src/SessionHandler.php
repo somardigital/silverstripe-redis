@@ -34,7 +34,10 @@ class SessionHandler extends PredisHandler
             'gc_maxlifetime' => 7200,
         ]);
 
-        $this->register();
+        // Only register if headers haven't been sent (avoids warning during CLI)
+        if (!headers_sent()) {
+            $this->register();
+        }
     }
 
     public function read($session_id)
