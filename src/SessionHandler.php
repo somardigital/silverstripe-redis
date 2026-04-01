@@ -2,14 +2,19 @@
 
 namespace Somar\Redis;
 
+use RuntimeException;
 use Predis\Client;
 use Predis\Session\Handler as PredisHandler;
-use RuntimeException;
 use SilverStripe\Core\Environment;
+use SilverStripe\Core\Config\Configurable;
 
 class SessionHandler extends PredisHandler
 {
+    use Configurable;
+
     private $prefix = 'PHPSESSION:';
+
+    private static $timeout = 7200;
 
     public function __construct()
     {
@@ -30,8 +35,14 @@ class SessionHandler extends PredisHandler
             'prefix' => Environment::getEnv('SS_REDIS_PREFIX'),
         ]);
 
+        $timeoutConfig = static::config()->get('timeout');
+
+         if (!empty($timeoutConfig)) {
+            static::$timeout = $timeoutConfig;
+        }
+
         parent::__construct($client, [
-            'gc_maxlifetime' => 7200,
+            'gc_maxlifetime' => static::$timeout,
         ]);
 
         $this->register();
